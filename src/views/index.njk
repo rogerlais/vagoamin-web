@@ -9,8 +9,20 @@
         <div class="col-3">
             <div class="class-card">
                 <div class="class-card-header d-flex">
-                            Unidades
-                    </div>
+                    <span>
+                    Unidades
+                    </span>
+                    <span class="class-unit-actions float-right">
+                        <i class="far fa-trash-alt"
+                            onclick="dlgDeleteUnit()"
+                            data-toggle="modal"
+                            data-target="#deleteFoodModal"></i>
+                        <i class="fas fa-pencil-alt"
+                            onclick="loadFormUpdateFood(${food.id}, '${food.name}', '${food.image}', '${food.price}', '${food.category}')"
+                            data-toggle="modal"
+                            data-target="#formFoodModal"></i>
+                    </span>
+                </div>
                 <div class="class-unit-card-body d-flex">
                     <select
                             multiple
@@ -51,14 +63,67 @@
                 <div class="card-footer text-muted">Total: 0/0</div>
             </div>
         </div>
+
+        <form id="formFood">
+            <div class="modal fade" id="formFoodModal" tabindex="-1" aria-labelledby="formFoodLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="formFoodLabel"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="food-name">Nome</label>
+                                <input type="text" class="form-control" id="food-name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="food-image">Image</label>
+                                <input type="text" class="form-control" id="food-image" name="image">
+                            </div>
+                            <div class="form-group">
+                                <label for="food-price">Preço</label>
+                                <input type="text" class="form-control" id="food-price" name="price">
+                            </div>
+                            <div class="form-group">
+                                <label for="food-category">Categoria</label>
+                                <select class="form-control" id="food-category" name="category_id"></select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
     <script type="module">
         //!serviços rest
         import clientapi from './js/rest/clientapi.js';
+        var globalUnitID = -1;
 
         //script para eventos
-        //unitList = document.getElementById("unitList");
-        
+
+        async function dlgDeleteUnit() {
+            if (globalUnitID >= 0) {
+                if (confirm(`Confirma a remoção da unidade(${globalUnitID})?`)) {
+                    console.log('Thing was not saved to the database.');
+                    const ret = await clientapi.destroy(`/units/${globalUnitID}`);
+                    unitList
+                        .options[unitList.selectedIndex]
+                        .remove();
+                    globalUnitID = -1
+                }
+            } else {
+                alert('Selecione a unidade para realizar a operação');
+            }
+        }
+
         const unitList = document.querySelector('#unitList');
 
         unitList.addEventListener("change", (event) => {
@@ -70,23 +135,29 @@
                 .value
                 .split(' - ')[0];
             if (key) {
+                globalUnitID = key;
                 loadHostList(key);
             } else {
+                globalUnitID = -1;
                 alert('Chave inválida');
             }
         });
 
-        function insertHostItem( ctl, host ){
-            ctl.appendChild( host );
+        function insertHostItem(ctl, host) {
+            const hostItem = `<option>${host.id} - ${host.name}</option>`;
+            ctl.insertAdjacentHTML('beforeend', hostItem);
         }
 
         async function loadHostList(key) {
             const hlist = document.getElementById('hostList');
             hlist.innerHTML = '';
-            const hosts = await clientapi.read('/hosts');
+            //todo validar agora
+            const hosts = await clientapi.read(`/hosts/unit/${key}`);
             for (const host of hosts) {
                 insertHostItem(hlist, host);
             }
         }
+
+        window.dlgDeleteUnit = dlgDeleteUnit;
     </script>
 {% endblock %}
