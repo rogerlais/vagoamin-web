@@ -1,21 +1,21 @@
-const Host = require("../models/Unit");
+const Unit = require("../models/Unit");
 
 const readAll = async (req, res) => {
-    const hosts = await Host.readAll();
+    const units = await Unit.readAll();
 
-    res.json(hosts);
+    res.json(units);
 };
 
 const create = async (req, res) => {
     const { name } = req.body;
 
-    const newHost = { name };
+    const newUnit = { name };
 
-    const hostId = await Host.createAutoInc(newHost);
+    const unitId = await Unit.createAutoInc(newUnit);
 
-    const host = await Host.readById(hostId);
+    const unit = await Unit.readById(unitId);
 
-    res.json(host);
+    res.json(unit);
 };
 
 const update = async (req, res) => {
@@ -23,19 +23,19 @@ const update = async (req, res) => {
 
     const { name } = req.body;
 
-    const updateHost = { name };
+    const updateUnit = { name };
 
-    await Host.update(id, updateHost);
+    await Unit.update(id, updateUnit);
 
-    const host = await Host.readById(id);
+    const unit = await Unit.readById(id);
 
-    res.json(host);
+    res.json(unit);
 };
 
 const destroy = async (req, res) => {
     const { id } = req.params;
 
-    await Host.destroy(id);
+    await Unit.destroy(id);
 
     res.status(204).send();
 };

@@ -16,7 +16,7 @@
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous"
         />
-        <link  rel="stylesheet" href="css/roger.css" />
+        <link rel="stylesheet" href="css/roger.css" />
     </head>
     <body>
         <h2>teste</h2>
@@ -34,7 +34,7 @@
                     <div class="class-unit-card-body d-flex">
                         <select
                             multiple
-                            class="class-unit-list"
+                            class="form-control d-flex"
                             name="unitList"
                             id="unitList"
                         >
@@ -76,16 +76,13 @@
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script>
-            pqp = document.getElementById("pqp");
-            pqp.onclick = function (e) {
-                $(".list-group .list-group-item").removeClass("active");
-                $(e.target).addClass("active");
-            };
             unitList = document.getElementById("unitList");
-            pqp.onclick = function (e) {
-                $(".list-group .list-group-item").removeClass("active");
-                $(e.target).addClass("active");
-            };
+            unitList.addEventListener("change", (event) => {
+                //talvez seja necessario adiantar a alteração do item selecionado
+                //1 - remove do atual $(".list-group .list-group-item").removeClass("active");
+                //2  passa para o novo $(e.target).addClass("active");
+                alert( `You like ${event.target.value}` );
+            });
         </script>
         <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

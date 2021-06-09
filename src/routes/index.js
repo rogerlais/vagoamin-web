@@ -6,7 +6,7 @@ const Unit = require( '../models/Unit');
 // const admsController = require('../controllers/admsController');
 // const usersController = require('../controllers/usersController');
 // const authController = require('../controllers/authController');
-// const Auth = require('../middleware/auth');
+//const Auth = require('../middleware/auth');
 
 router.get("/", async (req, res) => {
     //res.render("index.njk", { viewDebug: true, hosts: hosts, data : JSON.stringify( hosts ) });

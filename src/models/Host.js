@@ -3,16 +3,16 @@ const { conn } = require("../db");
 async function create(data) {
     const sql = `
     INSERT INTO
-      hosts (id, name)
+      hosts (id, name, unit_id, always_on)
     VALUES
-      (?, ?)
+      (?, ?, ?, ?)
     `;
 
     const db = await conn();
 
-    const { id, name } = data;
+    const { id, name, unit_id, always_on } = data;
 
-    const { lastID } = await db.run(sql, [id, name]);
+    const { lastID } = await db.run(sql, [id, name, unit_id, always_on]);
 
     return lastID;
 }

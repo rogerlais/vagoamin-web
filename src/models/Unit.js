@@ -3,16 +3,16 @@ const { conn } = require("../db");
 async function create(data) {
     const sql = `
     INSERT INTO
-      hosts (id, name)
+      units (id, name, adm_id)
     VALUES
-      (?, ?)
+      (?, ?, ?)
     `;
 
     const db = await conn();
 
-    const { id, name } = data;
+    const { id, name, adm_id } = data;
 
-    const { lastID } = await db.run(sql, [id, name]);
+    const { lastID } = await db.run(sql, [id, name, adm_id]);
 
     return lastID;
 }
@@ -20,16 +20,16 @@ async function create(data) {
 async function createAutoInc(data) {
     const sql = `
     INSERT INTO
-      hosts (name)
+      units (name, adm)
     VALUES
-      (?)
+      (?, ?)
     `;
 
     const db = await conn();
 
-    const { name } = data;
+    const { name, adm_id } = data;
 
-    const { lastID } = await db.run(sql, [name]);
+    const { lastID } = await db.run(sql, [name, adm_id]);
 
     return lastID;
 }
@@ -37,27 +37,26 @@ async function createAutoInc(data) {
 async function readAll() {
     const sql = `
     SELECT
-      hosts.id, hosts.name
+      units.id, units.name, units.adm_id
     FROM
-      hosts
+      units
   `;
 
     const db = await conn();
 
-    const hosts = await db.all(sql);
+    const units = await db.all(sql);
 
-    return hosts;
+    return units;
 }
 
 async function readById(id) {
     const sql = `
     SELECT
-      hosts.id, hosts.name
+    units.id, units.name
     FROM
-      unit INNER JOIN hosts
+      unit 
     WHERE
-      unit.id = hosts.unit_id AND
-      hosts.id = ?
+      units.id = ?
   `;
 
     const db = await conn();
@@ -67,10 +66,10 @@ async function readById(id) {
     return unit;
 }
 
-async function update(id, data) {
+async function update(data) {
     const sql = `
     UPDATE
-      hosts
+    units
     SET
       name = ? , adm_id = ?
     WHERE
@@ -89,7 +88,7 @@ async function update(id, data) {
 async function destroy(id) {
     const sql = `
     DELETE FROM
-      hosts
+    units
     WHERE
       id = ?
   `;

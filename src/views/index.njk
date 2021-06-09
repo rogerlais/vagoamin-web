@@ -14,7 +14,7 @@
                 <div class="class-unit-card-body d-flex">
                     <select
                             multiple
-                            {# nem a pau apenas class-form-control d-flex deu certo #}
+                            {# BUG - nem a pau apenas class-form-control d-flex deu certo #}
                             class="form-control d-flex"
                             name="unitList"
                             id="unitList"
@@ -31,23 +31,62 @@
         <div class="col-4">
             <div class="class-card">
                 <div class="class-card-header d-flex">Computadores</div>
-                <div class="class-card-body d-flex">
-                    
-                </div>
-                <div class="card-footer text-muted">Footer</div>
+                <div class="class-card-body d-flex"></div>
+                <select                             multiple
+                            {# BUG - nem a pau apenas class-form-control d-flex deu certo #}
+                            class="form-control d-flex"
+                            name="hostList"
+                            id="hostList"
+                ></select>
+                <div class="card-footer text-muted">Total: 0/0</div>
             </div>
         </div>
         <div class="col-5">
             <div class="card">
-                <div class="card-header">Header</div>
+                <div class="card-header">Habilitados</div>
                 <div class="card-body">
                     <h4 class="card-title">Title</h4>
                     <p class="card-text">Text</p>
                 </div>
-                <div class="card-footer text-muted">Footer</div>
+                <div class="card-footer text-muted">Total: 0/0</div>
             </div>
         </div>
     </div>
+    <script type="module">
+        //!serviços rest
+        import clientapi from './js/rest/clientapi.js';
 
+        //script para eventos
+        //unitList = document.getElementById("unitList");
+        
+        const unitList = document.querySelector('#unitList');
 
+        unitList.addEventListener("change", (event) => {
+            //talvez seja necessario adiantar a alteração do item selecionado
+            //1 - remove do atual $(".list-group .list-group-item").removeClass("active");
+            //2  passa para o novo $(e.target).addClass("active");
+            const key = event
+                .target
+                .value
+                .split(' - ')[0];
+            if (key) {
+                loadHostList(key);
+            } else {
+                alert('Chave inválida');
+            }
+        });
+
+        function insertHostItem( ctl, host ){
+            ctl.appendChild( host );
+        }
+
+        async function loadHostList(key) {
+            const hlist = document.getElementById('hostList');
+            hlist.innerHTML = '';
+            const hosts = await clientapi.read('/hosts');
+            for (const host of hosts) {
+                insertHostItem(hlist, host);
+            }
+        }
+    </script>
 {% endblock %}
