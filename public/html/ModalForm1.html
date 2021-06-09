@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <title>Menu</title>
+        <script type=text/javascript>
+            function validateFormOnSubmit(theForm) {
+                $('#divPopup').load('/html/ModalForm1.html', function () {
+                    $('#myModal').modal('show');
+                });
+                return true;
+            }
+        </script>
+    </head>
+    <body>
+        <div name="modalSegment">
+            <i class="fas fa-h1    ">OKOKOK</i>
+            <h1>roger</h1>
+            <i class="fas fa-tachometer-fastest    "></i>
+            <div class="form-group">
+                <label for="">okok</label>
+                <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                <small id="helpId" class="text-muted">Help text</small>
+            </div>
+            <div>
+                <form action="#" onsubmit="return validateFormOnSubmit(this);">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <input type='submit'>Confirmar</button>
+                    <input type=submit name=Submit value=Send></input>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

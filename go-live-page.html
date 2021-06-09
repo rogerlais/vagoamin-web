@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+        />
+        <!-- todo voltar o caminho após <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">  /-->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/public/css/bootstrap.min.css"
+        />
+        <title>PÁGINA - MODELO - VAGOAMIN-WEB</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    </head>
+    <body>
+        <select class="selectpicker" data-live-search="true" data-size="7" onchange="selectChanged()" maxOptions=1 >
+            <option>Petr Karel</option>
+            <option>Honza Novák</option>
+            <option>David Egydy</option>
+            <option>Sláva Kovář</option>
+            <option>Hana Skalická</option>
+            <option>Simona Kolářová</option>
+            <option>Kateřina Sychová</option>
+            <option>Amálka Sychová</option>
+            <option>Jana Sychová</option>
+            <option>Magdaléna Sychová</option>
+            <option>Tereza Sychová</option>
+            <option>Bohdana Sychová</option>
+        </select>
+
+        <button type="button" onclick="dispatchEventX('ok')">
+            Test jQuery Code
+        </button>
+        <script>
+            //rotinas de eventos
+            function dispatchEventX(eventArg) {
+                //evento oco
+                alert(`Evento disparado com argumento( ${eventArg})`);
+            }
+
+            function selectChanged(eventArg) {
+                var selected = $(".selectpicker option:selected").val();
+                alert(selected);
+            }
+            //carga do documento
+            $(document).ready(function () {
+                window.eventX = dispatchEventX; //registra evento para posterior chamada por controle
+                window.selectChanged = selectChanged;
+                //$(".selectpicker").selectpicker();
+                //on change function i need to control selected value
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+[carga dinamica de css]
+https://stackoverflow.com/questions/50947998/fetch-api-css-loader
+
+[basico para modal via bootstrap]
+https://getbootstrap.com/docs/4.0/components/modal/
+
+[bootstrap dialogs com conteudo remoto + trocentos exemplos]
+https://nakupanda.github.io/bootstrap3-dialog/
+
+[exemplos de select sempre com dropbox]
+https://developer.snapappointments.com/bootstrap-select/examples/
+
+[framework superior a bs ]
+https://metroui.org.ua/listview.html
+
+[express]
+http://expressjs.com/en/api.html
+
+[efeito de easter egg]
+http://jsfiddle.net/Lxveqf7h/1/
+
+[controles bs4]
+https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp
+
+[Error Handling in Node.js]
+https://www.joyent.com/node-js/production/design/errors
+
+
+[Nunjucks Templates]
+https://legacy.adonisjs.com/docs/3.2/templating
+
+
+[How to get Readable error response from javascript Fetch api?]
+https://stackoverflow.com/questions/40408219/how-to-get-readable-error-response-from-javascript-fetch-api
+https://stackoverflow.com/questions/40408219/how-to-get-readable-error-response-from-javascript-fetch-api
+
+[sqlite access]
+https://dev.to/lampewebdev/getting-sqlite-running-with-await-async-and-expressjs-polkajs-2b0g

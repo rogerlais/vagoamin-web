@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <title>Menu</title>
+  <style>
+    .unit-actions {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">VAGOAMIN</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Menu </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="signout()">Sair</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <h1 class="mt-5 text-center">Menu</h1>
+
+    <div class="text-right">
+      <button
+        type="button"
+        class="btn btn-secondary rounded-circle mr-4 font-weight-bold"
+        id="newBtnUnit"
+        data-toggle="modal"
+        data-target="#formUnitModal"
+        onclick="loadStoreUnit()">
+        +
+      </button>
+    </div>
+
+    <section class="card-deck my-3"></section>
+
+    <form id="formUnit">
+      <div class="modal fade" id="formUnitModal" tabindex="-1" aria-labelledby="formUnitLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="formUnitLabel"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="unit-name">Nome</label>
+                <input type="text" class="form-control" id="unit-name" name="name">
+              </div>
+              <div class="form-group">
+                <label for="unit-image">Image</label>
+                <input type="text" class="form-control" id="unit-image" name="image">
+              </div>
+              <div class="form-group">
+                <label for="unit-price">Preço</label>
+                <input type="text" class="form-control" id="unit-price" name="price">
+              </div>
+              <div class="form-group">
+                <label for="unit-adm">Adm. por:</label>
+                <select class="form-control" id="unit-adm" name="adm_id"></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form id="formDeleteUnit">
+      <div class="modal fade" id="deleteUnitModal" tabindex="-1" aria-labelledby="deleteUnitLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteUnitLabel">Excluir unidade</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Deseja realmente excluir <span id="modal-name-unit"></span>?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button type="button" class="btn btn-primary" id="deleteUnitBtn">Excluir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  <div>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script type="module">
+    import api from './js/services/api.js';
+
+    function formatCurrency(price) {
+      return Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(price)
+    }
+
+    function createUnitActions(unit) {
+      return `
+        <i
+          class="far fa-trash-alt"
+          onclick="deleteUnitView(${unit.id}, '${unit.name}')"
+          data-toggle="modal"
+          data-target="#deleteUnitModal">
+        </i>
+        <i
+          class="fas fa-pencil-alt"
+          onclick="loadFormUpdateUnit(${unit.id}, '${unit.name}', '${unit.adm}')"
+          data-toggle="modal"
+          data-target="#formUnitModal">
+        </i>
+      `;
+    }
+
+    function createUnitView(unit) {
+      const unitsView = `
+        <div class="card-unit col-sm-6 col-lg-4 col-xl-3 mb-3" id="unit-${ unit.id }">
+          <div class="card">
+            <div class="card-header text-center font-weight-bold">
+              <span class="unit-name">
+                ${unit.name}
+              </span>
+              <span class="unit-actions float-right">
+                ${createUnitActions(unit)}
+              </span>
+            </div>
+            <div class="card-body p-0">
+              <img src="${unit.image}" alt="${unit.name}" class="unit-image w-100">
+            </div>
+            <div class="card-footer text-right">
+              <span class="unit-adm float-left badge badge-secondary">${unit.adm}</span>
+              <span class="unit-price">${formatCurrency(unit.price)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const unitsDeck = document.querySelector('.card-deck');
+
+      unitsDeck.insertAdjacentHTML('beforeend', unitsView);
+    }
+
+    async function loadUnits() {
+      const units = await api.read('/units');
+
+      for (const unit of units) {
+        createUnitView(unit);
+      }
+
+    }
+
+    async function loadFormAdms() {
+      const adms = await api.read('/adms');
+
+      for (const adm of adms) {
+        const admsView = `<option value="${adm.id}">${adm.name}</option>`;
+        document.querySelector('select').insertAdjacentHTML('beforeend', admsView);
+      }
+    }
+
+    function loadFormValues(title, unitName, unitAdm) {
+      const formLabel = document.querySelector('#formUnitLabel');
+      const unitNameInput = document.querySelector('#unit-name');
+      const unitAdmSelect = document.querySelector('#unit-adm');
+
+      formLabel.innerHTML = title;
+      unitNameInput.value = unitName;
+      Array.from(unitAdmSelect.options).forEach((option, index) => {
+        if (option.innerHTML === unitAdm)
+          unitAdmSelect.value = index + 1;
+      })
+    }
+
+    function loadStoreUnit() {
+      const formUnit = document.querySelector('#formUnit');
+
+      loadFormValues('Nova Unidade', '', '', '', 1);
+
+      formUnit.onsubmit = async (e) => {
+        e.preventDefault();
+
+        let unit = Object.fromEntries(new FormData(formUnit));
+
+        const newUnit = await api.create('/units', unit);
+
+        createUnitView(newUnit);
+
+        $('#formUnitModal').modal('toggle');
+
+        document.querySelector('#newBtnUnit').blur();
+      };
+    }
+
+    function updateUnitRow(unit) {
+      const unitName = document.querySelector(`#unit-${unit.id} .unit-name`);
+      const unitAdm = document.querySelector(`#unit-${unit.id} .unit-adm`);
+      const unitActions = document.querySelector(`#unit-${unit.id} .unit-actions`);
+      const unitAdmSelect = document.querySelector('#unit-adm');
+
+      unitName.innerHTML = unit.name;
+      unitActions.innerHTML = createUnitActions(unit);
+      unitAdm.innerHTML = unitAdmSelect.options[unit.adm_id - 1].innerHTML;
+    }
+
+    function loadFormUpdateUnit(...unit) {
+      const [id, name, adm] = unit;
+
+      const formUnit = document.querySelector('#formUnit');
+
+      loadFormValues('Atualizar Unidade', name, adm);
+
+      formUnit.onsubmit = (e) => {
+        e.preventDefault();
+
+        const unit = Object.fromEntries(new FormData(formUnit));
+
+        api.update(`/units/${id}`, unit);
+
+        updateUnitRow({id, ...unit});
+
+        $('#formUnitModal').modal('toggle');
+      };
+    }
+
+    function deleteUnitView(unitId, unitName) {
+      document.querySelector('#modal-name-unit').innerHTML = unitName;
+
+      document.querySelector('#deleteUnitBtn').onclick = (e) => {
+        e.preventDefault();
+
+        api.destroy(`/units/${unitId}`);
+
+        document.querySelector(`#unit-${ unitId }`).remove();
+
+        $('#deleteUnitModal').modal('toggle');
+      };
+    }
+
+    async function signout() {
+      await fetch('/signout');
+
+      localStorage.removeItem('@vagoaminApp:token');
+
+      location.href = '/signin.html';
+    }
+
+    window.loadStoreUnit = loadStoreUnit;
+    window.loadFormUpdateUnit = loadFormUpdateUnit;
+    window.deleteUnitView = deleteUnitView;
+    window.signout = signout;
+
+    loadUnits();
+    loadFormAdms();
+
+    if (!localStorage.getItem('@vagoaminApp:token')) {
+      location.href = '/signin.html';
+    }
+  </script>
+</body>
+</html>
