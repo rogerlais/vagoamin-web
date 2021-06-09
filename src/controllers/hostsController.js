@@ -41,4 +41,18 @@ const destroy = async (req, res) => {
     res.status(204).send();
 };
 
-module.exports = { readAll, create, update, destroy };
+const readById = async (req, res) => {
+    const { id } = req.params;
+
+    const ret = await Host.readById(id);
+    res.status(200).send(ret);
+};
+
+const readAllByUnit = async (req, res) => {
+    const { id } = req.params;
+
+    const ret = await Host.readAllByUnit(id);
+    res.status(200).send(ret);
+};
+
+module.exports = { readAll, readById, readAllByUnit, create, update, destroy };

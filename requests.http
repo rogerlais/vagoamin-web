@@ -1,0 +1,46 @@
+### remove unit
+DELETE http://localhost:3003/units/2
+Authorization: Bearer {{signin.response.body.$.token}}
+
+
+### Read host in unit
+GET http://localhost:3003/hosts/unit/1
+Authorization: Bearer {{signin.response.body.$.token}}
+
+
+### Signup
+POST http://localhost:3003/signup
+Content-Type: application/json
+
+{
+  "login": "eu",
+  "password": "123",
+  "confirm_password": "123"
+}
+
+
+### Signin
+# @name signin
+POST http://localhost:3003/signin
+Content-Type: application/json
+
+{
+  "login": "eu",
+  "password": "123"
+}
+
+### Update Food
+PUT http://localhost:3000/foods/{{createFood.response.body.$.id}}
+Authorization: Bearer {{signin.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "name": "Batata Frita",
+  "image": "/imgs/batatafrita.jpg",
+  "price": 5.5,
+  "category_id": 1
+}
+
+### Delete Food
+DELETE http://localhost:3000/foods/{{createFood.response.body.$.id}}
+Authorization: Bearer {{signin.response.body.$.token}}

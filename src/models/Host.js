@@ -1,5 +1,7 @@
 const { conn } = require("../db");
 
+const HOST_FIELDS = 'hosts.id, hosts.name, hosts.IPV4, hosts.online, hosts.lastcheck, hosts.unit_id, hosts.always_on, hosts.mac';
+
 async function create(data) {
     const sql = `
     INSERT INTO
@@ -37,7 +39,7 @@ async function createAutoInc(data) {
 async function readAll() {
     const sql = `
     SELECT
-      hosts.id, hosts.name
+    ${HOST_FIELDS}
     FROM
       hosts
   `;
@@ -49,14 +51,31 @@ async function readAll() {
     return hosts;
 }
 
+async function readAllByUnit(unitId) {
+    const sql = `
+    SELECT
+    ${HOST_FIELDS}
+    FROM
+      hosts
+    WHERE
+      hosts.unit_id = ?
+  `;
+
+    const db = await conn();
+
+    const hosts = await db.all(sql, unitId);
+
+    return hosts;
+}
+
+
 async function readById(id) {
     const sql = `
     SELECT
-      hosts.id, hosts.name
+    ${HOST_FIELDS}
     FROM
-      unit INNER JOIN hosts
+      hosts 
     WHERE
-      unit.id = hosts.unit_id AND
       hosts.id = ?
   `;
 
@@ -66,6 +85,8 @@ async function readById(id) {
 
     return host;
 }
+
+
 
 async function update(id, data) {
     const sql = `
@@ -101,4 +122,4 @@ async function destroy(id) {
     return lastID;
 }
 
-module.exports = { create, createAutoInc, readAll, readById, update, destroy };
+module.exports = { create, createAutoInc, readAll, readById, readAllByUnit, update, destroy };

@@ -23,7 +23,7 @@ app.use(express.static("public"));
 //
 app.set("view engine", "njk");
 
-//Registro de rotina global
+//Registro de rotina global para o nunjucks - para depuração
 function getVars() {
     return this.getVariables();
 }

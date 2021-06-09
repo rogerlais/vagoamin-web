@@ -4,9 +4,9 @@ const hostsController = require("../controllers/hostsController");
 const unitsController = require('../controllers/unitsController');
 const Unit = require( '../models/Unit');
 // const admsController = require('../controllers/admsController');
-// const usersController = require('../controllers/usersController');
-// const authController = require('../controllers/authController');
-//const Auth = require('../middleware/auth');
+const usersController = require('../controllers/usersController');
+const authController = require('../controllers/authController');
+const Auth = require('../middleware/auth');
 
 router.get("/", async (req, res) => {
     //res.render("index.njk", { viewDebug: true, hosts: hosts, data : JSON.stringify( hosts ) });
@@ -18,17 +18,25 @@ router.get("/", async (req, res) => {
     });
 });
 
-// router.post('/hosts', Auth.isAuthenticated, hostsController.create);
-// router.get('/hosts', Auth.isAuthenticated, hostsController.readAll);
-// router.delete('/hosts/:id', Auth.isAuthenticated, hostsController.destroy);
-// router.put('/hosts/:id', Auth.isAuthenticated, hostsController.update);
+router.post('/hosts', Auth.isAuthenticated, hostsController.create);
+router.get('/hosts', Auth.isAuthenticated, hostsController.readAll);
+router.get('/hosts/unit/:id', Auth.isAuthenticated, hostsController.readAllByUnit);
+router.delete('/hosts/:id', Auth.isAuthenticated, hostsController.destroy);
+router.put('/hosts/:id', Auth.isAuthenticated, hostsController.update);
+
+//unidades
+router.get( '/units', Auth.isAuthenticated, unitsController.readAll );
+router.post( '/units', Auth.isAuthenticated, unitsController.create );
+router.put( '/units', Auth.isAuthenticated, unitsController.update );
+router.delete( '/units/:id', Auth.isAuthenticated, unitsController.destroy );
+
 
 // router.get('/adms', Auth.isAuthenticated, admsController.readAll);
 
-// router.post('/signin', authController.signin);
+router.post('/signin', authController.signin);
 
-// router.get('/signout', Auth.isAuthenticated, authController.signout);
+router.get('/signout', Auth.isAuthenticated, authController.signout);
 
-// router.post('/signup', usersController.store);
+router.post('/signup', usersController.store);
 
 module.exports = router;

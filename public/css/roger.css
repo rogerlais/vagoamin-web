@@ -1,3 +1,6 @@
+.class-unit-actions {
+    cursor: pointer;
+}
 .class-form-control .form-control {
     align-items: stretch;
     display: flex !important;
