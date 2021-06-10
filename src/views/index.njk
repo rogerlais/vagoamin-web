@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-11">
-            <h1>VAGOAMIN - Vara de Goiabeira no meio ambientalmente incorreto</h1>
+            <h1 <i class="fa fa-align-center" aria-hidden="true"></i>>VAGOAMIN - Vara de Goiabeira no meio ambientalmente incorreto</h1>
             <div class="row">
                 <span id='current-user'>Bem-vindo:</span>
                 <span>
@@ -379,22 +379,24 @@
         item.innerHTML = unit.name;
     }
 
-    function changeCSS(cssFile, cssLinkIndex) {
+    //troca de estilos
+    document
+        .getElementById('user-css')
+        .addEventListener("change", (event) => {
+            var oldlink = document
+                .getElementsByTagName("link")
+                .item(cssLinkIndex);
 
-        var oldlink = document
-            .getElementsByTagName("link")
-            .item(cssLinkIndex);
+            var newlink = document.createElement("link");
+            newlink.setAttribute("rel", "stylesheet");
+            newlink.setAttribute("type", "text/css");
+            newlink.setAttribute("href", cssFile);
 
-        var newlink = document.createElement("link");
-        newlink.setAttribute("rel", "stylesheet");
-        newlink.setAttribute("type", "text/css");
-        newlink.setAttribute("href", cssFile);
-
-        document
-            .getElementsByTagName("head")
-            .item(cssLinkIndex)
-            .replaceChild(newlink, oldlink);
-    }
+            document
+                .getElementsByTagName("head")
+                .item(cssLinkIndex)
+                .replaceChild(newlink, oldlink);
+        });
 
     window.dlgDeleteUnit = dlgDeleteUnit;
 
