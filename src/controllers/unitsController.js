@@ -6,10 +6,17 @@ const readAll = async (req, res) => {
     res.json(units);
 };
 
-const create = async (req, res) => {
-    const { name } = req.body;
+const readById = async (req, res) => {
+    const { id }  = req.params;
+    const unit = await Unit.readById( id );
+    res.json(unit);
+};
 
-    const newUnit = { name };
+
+const create = async (req, res) => {
+    const { name, admId } = req.body;
+
+    const newUnit = { name, admId };
 
     const unitId = await Unit.createAutoInc(newUnit);
 
@@ -21,9 +28,9 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     const { id } = req.params;
 
-    const { name } = req.body;
+    const { name, admId } = req.body;
 
-    const updateUnit = { name };
+    const updateUnit = { name, admId };
 
     await Unit.update(id, updateUnit);
 
@@ -40,4 +47,4 @@ const destroy = async (req, res) => {
     res.status(204).send();
 };
 
-module.exports = { readAll, create, update, destroy };
+module.exports = { readAll, readById, create, update, destroy };

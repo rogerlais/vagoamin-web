@@ -24,7 +24,7 @@ async function signin(req, res) {
 
         console.log(token);
 
-        return res.json({ auth: true, token: token });
+        return res.json({ auth: true, token: token, "user": user.login, "css": user.css });
     } else {
         return res.status(401).send("Login inválido!");
     }

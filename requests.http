@@ -1,3 +1,8 @@
+### Read users
+GET http://localhost:3003/users
+Authorization: Bearer {{signin.response.body.$.token}}
+
+
 ### remove unit
 DELETE http://localhost:3003/units/2
 Authorization: Bearer {{signin.response.body.$.token}}
@@ -29,18 +34,7 @@ Content-Type: application/json
   "password": "123"
 }
 
-### Update Food
-PUT http://localhost:3000/foods/{{createFood.response.body.$.id}}
-Authorization: Bearer {{signin.response.body.$.token}}
-Content-Type: application/json
 
-{
-  "name": "Batata Frita",
-  "image": "/imgs/batatafrita.jpg",
-  "price": 5.5,
-  "category_id": 1
-}
-
-### Delete Food
-DELETE http://localhost:3000/foods/{{createFood.response.body.$.id}}
-Authorization: Bearer {{signin.response.body.$.token}}
+### Signout
+# @name signout
+POST http://localhost:3003/signout

@@ -1,5 +1,8 @@
 const { conn } = require("../db");
 
+
+const UNIT_FIELDS = 'units.id , units.name , units.adm_id , units.max_on';
+
 async function create(data) {
     const sql = `
     INSERT INTO
@@ -20,16 +23,16 @@ async function create(data) {
 async function createAutoInc(data) {
     const sql = `
     INSERT INTO
-      units (name, adm)
+      units (name, adm_id)
     VALUES
       (?, ?)
     `;
 
     const db = await conn();
 
-    const { name, adm_id } = data;
+    const { name, admId } = data;
 
-    const { lastID } = await db.run(sql, [name, adm_id]);
+    const { lastID } = await db.run(sql, [name, admId]);
 
     return lastID;
 }
@@ -37,7 +40,7 @@ async function createAutoInc(data) {
 async function readAll() {
     const sql = `
     SELECT
-      units.id, units.name, units.adm_id
+      ${UNIT_FIELDS}
     FROM
       units
   `;
@@ -52,9 +55,9 @@ async function readAll() {
 async function readById(id) {
     const sql = `
     SELECT
-    units.id, units.name
+    ${UNIT_FIELDS}
     FROM
-      unit 
+      units 
     WHERE
       units.id = ?
   `;
@@ -66,7 +69,7 @@ async function readById(id) {
     return unit;
 }
 
-async function update(data) {
+async function update(id, data) {
     const sql = `
     UPDATE
     units
@@ -75,13 +78,9 @@ async function update(data) {
     WHERE
       id = ?
   `;
-
     const db = await conn();
-
-    const { name, unit_id } = data;
-
-    const { changes } = await db.run(sql, [name, unit_id, id]);
-
+    const { name, admId } = data;
+    const { changes } = await db.run(sql, [name, admId, id]);
     return changes;
 }
 
@@ -94,9 +93,7 @@ async function destroy(id) {
   `;
 
     const db = await conn();
-
     const { lastID } = await db.run(sql, [id]);
-
     return lastID;
 }
 

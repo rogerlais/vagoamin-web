@@ -48,10 +48,8 @@ async function readById(id) {
   `;
 
     const db = await conn();
-
-    const food = await db.get(sql, id);
-
-    return food;
+    const user = await db.get(sql, id);
+    return user;
 }
 
 async function readByLogin(login) {
@@ -71,4 +69,17 @@ async function readByLogin(login) {
     return user;
 }
 
-module.exports = { create, createAutoInc, readById, readByLogin };
+async function readAll() {
+    const sql = `
+    SELECT
+      *
+    FROM
+      users
+  `;
+    const db = await conn();
+    const users = await db.all(sql);
+    return users;
+}
+
+
+module.exports = { create, createAutoInc, readById, readByLogin, readAll };

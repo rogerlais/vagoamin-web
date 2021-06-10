@@ -45,9 +45,22 @@ async function readAll() {
   `;
 
     const db = await conn();
-
     const hosts = await db.all(sql);
+    return hosts;
+}
 
+async function readAllEnabledByUnit(unitId) {
+    const sql = `
+    SELECT
+    ${HOST_FIELDS}
+    FROM
+      hosts
+    WHERE
+      ( hosts.unit_id = ? ) and ( hosts.always_on )
+  `;
+
+    const db = await conn();
+    const hosts = await db.all(sql, unitId);
     return hosts;
 }
 
@@ -122,4 +135,4 @@ async function destroy(id) {
     return lastID;
 }
 
-module.exports = { create, createAutoInc, readAll, readById, readAllByUnit, update, destroy };
+module.exports = { create, createAutoInc, readAll, readById, readAllByUnit, readAllEnabledByUnit, update, destroy };

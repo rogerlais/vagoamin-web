@@ -1,4 +1,11 @@
+.class-list-actions {
+    cursor: pointer;
+}
+
 .class-unit-actions {
+    cursor: pointer;
+}
+.class-host-actions {
     cursor: pointer;
 }
 .class-form-control .form-control {
@@ -19,6 +26,16 @@
     height: auto;
 }
 /* inserir d-flex para uso, mesmo com todos os atributos copiados*/
+.class-list-card-body .card-body {
+    align-items: stretch;
+    display: flex !important;
+    word-wrap: break-word;
+    justify-content: space-between;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
 .class-unit-card-body .card-body {
     align-items: stretch;
     display: flex !important;

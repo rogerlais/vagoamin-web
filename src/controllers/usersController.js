@@ -22,4 +22,9 @@ const store = async (req, res) => {
     }
 };
 
-module.exports = { store };
+const readAll = async ( req, res ) =>{
+    const users = await User.readAll();
+    res.json(users);
+}
+
+module.exports = { store, readAll};
