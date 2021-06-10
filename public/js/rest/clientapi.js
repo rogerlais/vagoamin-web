@@ -93,4 +93,7 @@ async function requestWithToken(method, resource, data = null) {
 }
 
 // API base de referência https://restfulapi.net/
-export default { signin, signup, create, read, update, destroy };
+//const clientapi = { signin, signup, create, read, update, destroy };
+//export default clientapi;
+const clientapi = { signin, signup, create, read, update, destroy };
+export default clientapi;

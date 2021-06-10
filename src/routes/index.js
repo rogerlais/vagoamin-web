@@ -16,21 +16,6 @@ router.get("/", async (req, res) => {
         units: units,
         locals: req.locals,
     });
-
-
-    // if (!Auth.isAuthenticated(req, res)) {
-    //     //este é o nivel mais superior o capaz de redirecionar com segurança
-    //     //res.redirect("/signin.html");
-    //     res.render("/public/signin.html", {});
-    // } else {
-    //     const units = await Unit.readAll();
-    //     res.render("index.njk", {
-    //         viewDebug: true,
-    //         logged: false,
-    //         units: units,
-    //         locals: req.locals,
-    //     });
-    // }
 });
 
 router.post("/hosts", Auth.isAuthenticated, hostsController.create);

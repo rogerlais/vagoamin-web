@@ -84,6 +84,7 @@
 
         if(signin.auth) {
           localStorage.setItem('@vagoaminApp:token', signin.token);
+          localStorage.setItem('@vagoaminApp:user', signin.user );
           location.href = '/';
         }
       } else {

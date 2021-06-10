@@ -60,6 +60,7 @@
 }
 
 .class-card .card {
+    max-width: 13rem;
     align-items: stretch;
     text-align: center;
     box-sizing: border-box;

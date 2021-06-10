@@ -1,11 +1,13 @@
-[carga dinamica de css]
-https://stackoverflow.com/questions/50947998/fetch-api-css-loader
-
-[basico para modal via bootstrap]
+//!
+[forms modal]
+https://getbootstrap.com/docs/4.0/components/forms/
 https://getbootstrap.com/docs/4.0/components/modal/
 
 [bootstrap dialogs com conteudo remoto + trocentos exemplos]
 https://nakupanda.github.io/bootstrap3-dialog/
+
+[rest complex queries]
+https://stackoverflow.com/questions/16795999/how-to-implement-complex-queries-with-a-rest-api/16796163
 
 [exemplos de select sempre com dropbox]
 https://developer.snapappointments.com/bootstrap-select/examples/
@@ -36,3 +38,6 @@ https://stackoverflow.com/questions/40408219/how-to-get-readable-error-response-
 
 [sqlite access]
 https://dev.to/lampewebdev/getting-sqlite-running-with-await-async-and-expressjs-polkajs-2b0g
+
+[uso de jwt]
+https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
