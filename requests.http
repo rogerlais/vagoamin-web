@@ -1,3 +1,20 @@
+
+### Signin
+# @name signin
+POST http://localhost:3003/signin
+Content-Type: application/json
+
+{
+  "login": "eu",
+  "password": "123"
+}
+
+
+### Read all units
+GET http://localhost:3003/units
+Authorization: Bearer {{signin.response.body.$.token}}
+
+
 ### Read users
 GET http://localhost:3003/users
 Authorization: Bearer {{signin.response.body.$.token}}
@@ -22,18 +39,6 @@ Content-Type: application/json
   "password": "123",
   "confirm_password": "123"
 }
-
-
-### Signin
-# @name signin
-POST http://localhost:3003/signin
-Content-Type: application/json
-
-{
-  "login": "eu",
-  "password": "123"
-}
-
 
 ### Signout
 # @name signout

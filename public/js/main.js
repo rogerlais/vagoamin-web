@@ -16,6 +16,7 @@ const globalHostList = document.querySelector("#hostList");
 const globalAlwaysOnList = document.querySelector("#hostList");
 const globalLblUser = document.getElementById("user-lbl");
 const globalStyleList = document.getElementById("user-css");
+const globallblAdmUserLogin = document.getElementById( "lblAdmUserLogin")
 
 //script para eventos
 async function dlgDeleteUnit() {
@@ -37,10 +38,12 @@ globalUnitList.addEventListener("change", (event) => {
     //talvez seja necessario adiantar a alteração do item selecionado
     //1 - remove do atual $(".list-group .list-group-item").removeClass("active");
     //2  passa para o novo $(e.target).addClass("active");
-    const key =
-        event.target.options[event.target.selectedIndex].getAttribute("id");
+    const selOpt = event.target.options[event.target.selectedIndex];
+    const key = selOpt.getAttribute("unit-id");
+    const admLogin = selOpt.getAttribute( "unit-adm-login" );
     if (key) {
         globalUnitID = key;
+        globallblAdmUserLogin.innerHTML = `Adm. por: ${admLogin}`;
         loadHostList(key);
     } else {
         globalUnitID = -1;

@@ -56,11 +56,11 @@
                             id="unitList"
                         >
                                 {% for unit in units %}
-                                    <option id="{{unit.id}}">{{unit.name}}</option>
+                                    <option unit-id="{{unit.id}}" unit-adm-login="{{unit.login}}">{{unit.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="class-card-footer text-muted">Adm. por:........</div>
+                        <div class="class-card-footer text-muted" id="lblAdmUserLogin">Adm. por:</div>
                     </div>
                 </div>
                 <div class="col-4">

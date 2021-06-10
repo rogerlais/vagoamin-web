@@ -1,7 +1,7 @@
 const { conn } = require("../db");
 
 
-const UNIT_FIELDS = 'units.id , units.name , units.adm_id , units.max_on';
+const UNIT_FIELDS = 'units.id , units.name , units.adm_id , units.max_on, users.login';
 
 async function create(data) {
     const sql = `
@@ -39,11 +39,12 @@ async function createAutoInc(data) {
 
 async function readAll() {
     const sql = `
-    SELECT
-      ${UNIT_FIELDS}
-    FROM
-      units
-  `;
+    SELECT 
+        ${UNIT_FIELDS}
+    from 
+        units inner JOIN users
+    where 
+        ( units.adm_id = users.id )`
 
     const db = await conn();
 
@@ -57,9 +58,9 @@ async function readById(id) {
     SELECT
     ${UNIT_FIELDS}
     FROM
-      units 
+      units inner join users
     WHERE
-      units.id = ?
+      ( units.id = ? ) and ( units.adm_id = users.id )
   `;
 
     const db = await conn();
