@@ -37,4 +37,4 @@ Content-Type: application/json
 
 ### Signout
 # @name signout
-POST http://localhost:3003/signout
+GET  http://localhost:3003/signout
