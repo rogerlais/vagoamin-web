@@ -48,6 +48,13 @@ const readById = async (req, res) => {
     res.status(200).send(ret);
 };
 
+const readAllEnabledByUnit = async (req, res) => {
+    const { id } = req.params;
+
+    const ret = await Host.readAllEnabledByUnit(id);
+    res.status(200).send(ret);
+};
+
 const readAllByUnit = async (req, res) => {
     const { id } = req.params;
 
@@ -55,4 +62,4 @@ const readAllByUnit = async (req, res) => {
     res.status(200).send(ret);
 };
 
-module.exports = { readAll, readById, readAllByUnit, create, update, destroy };
+module.exports = { readAll, readById, readAllByUnit, readAllEnabledByUnit, create, update, destroy };
