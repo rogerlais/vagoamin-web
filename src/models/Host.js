@@ -1,6 +1,21 @@
 const { conn } = require("../db");
 
-const HOST_FIELDS = 'hosts.id, hosts.name, hosts.IPV4, hosts.online, hosts.lastcheck, hosts.unit_id, hosts.always_on, hosts.mac';
+const HOST_FIELDS =
+    "hosts.id, hosts.name, hosts.IPV4, hosts.online, hosts.lastcheck, hosts.unit_id, hosts.always_on, hosts.mac";
+
+async function filter(statment) {
+    const sql = `
+    SELECT
+    ${HOST_FIELDS}
+    FROM
+      hosts
+    WHERE
+        ${statment}
+  `;
+    const db = await conn();
+    const hosts = await db.all(sql);
+    return hosts;
+}
 
 async function create(data) {
     const sql = `
@@ -81,7 +96,6 @@ async function readAllByUnit(unitId) {
     return hosts;
 }
 
-
 async function readById(id) {
     const sql = `
     SELECT
@@ -98,8 +112,6 @@ async function readById(id) {
 
     return host;
 }
-
-
 
 async function update(id, data) {
     const sql = `
@@ -135,4 +147,14 @@ async function destroy(id) {
     return lastID;
 }
 
-module.exports = { create, createAutoInc, readAll, readById, readAllByUnit, readAllEnabledByUnit, update, destroy };
+module.exports = {
+    create,
+    createAutoInc,
+    filter,
+    readAll,
+    readById,
+    readAllByUnit,
+    readAllEnabledByUnit,
+    update,
+    destroy,
+};

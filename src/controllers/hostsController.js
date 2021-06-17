@@ -62,4 +62,11 @@ const readAllByUnit = async (req, res) => {
     res.status(200).send(ret);
 };
 
-module.exports = { readAll, readById, readAllByUnit, readAllEnabledByUnit, create, update, destroy };
+const filter = async ( req, res ) => {
+    //no momento não questiona nada, passa a clausula para a consulta
+    const { query } = req.body;  //todo: tratar corretamente a entrada para montar uma "where" eficiente
+    const ret = await Host.filter( query );
+    res.status(200).send( ret );
+}
+
+module.exports = { filter, readAll, readById, readAllByUnit, readAllEnabledByUnit, create, update, destroy };

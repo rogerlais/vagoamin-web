@@ -5,6 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
+            //! google-chrome --remote-debugging-port=9222&
+            "name": "Attach-chrome-Vagoamin",
+            "port": 9222,
+            "request": "attach",
+            "type": "pwa-chrome",
+            "webRoot": "${workspaceFolder}/public",
+            "url": "http://localhost:3003"
+        },
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:3003",
+            "webRoot": "${workspaceFolder}",
+            "serverReadyAction": {
+                "action": "debugWithChrome",
+                "pattern": "listening on port ([0-9]+)",
+                "uriFormat": "http://localhost:%s",
+                "webRoot": "${workspaceFolder}"
+            }
+        },
+        {
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "name": "nodemon",

@@ -1,4 +1,4 @@
-import clientapi from "./rest/clientapi.js";
+import clientapi from "/js/rest/clientapi.js";
 
 window.addEventListener("DOMContentLoaded", (event) => {
     //Durante a carga do documento atual, verifica se existe autenticação previa e redireciona se necessário
@@ -20,11 +20,11 @@ const globallblAdmUserLogin = document.getElementById( "lblAdmUserLogin")
 
 //script para eventos
 async function dlgDeleteUnit() {
+    debugger;
     if (globalUnitID >= 0) {
         const itemName =
             globalUnitList.options[globalUnitList.selectedIndex].innerHTML;
         if (confirm(`Confirma a remoção da unidade(${itemName})?`)) {
-            console.log("Thing was not saved to the database.");
             const ret = await clientapi.destroy(`/units/${globalUnitID}`);
             globalUnitList.options[globalUnitList.selectedIndex].remove();
             globalUnitID = -1;
@@ -63,13 +63,15 @@ function insertHostItem(ctl, host) {
     ctl.insertAdjacentHTML("beforeend", hostItem);
 }
 
-function loadFormValues(title, unitName, unitAdm) {
+function loadFormValues(title, unitName, unitAdm, unitMaxOn) {
     const formLabel = document.querySelector("#formUnitLabel");
     const unitNameInput = document.querySelector("#unit-name");
     const unitAdmSelect = document.querySelector("#unit-admId");
+    const unitMaxSelect = document.querySelector("#unit-max_on");
 
     formLabel.innerHTML = title;
     unitNameInput.value = unitName;
+    unitMaxSelect.selectedIndex = unitMaxOn-1; //base 0
     Array.from(unitAdmSelect.options).forEach((option, index) => {
         if (option.innerHTML === unitAdm) unitAdmSelect.value = index + 1;
     });
@@ -77,9 +79,9 @@ function loadFormValues(title, unitName, unitAdm) {
 
 function insertUserItem(ctl, user, admId) {
     if (admId == user.id) {
-        var userItem = `<option id="${user.id}" selected>${user.login}</option>`;
+        var userItem = `<option value="${user.id}" selected>${user.login}</option>`;
     } else {
-        var userItem = `<option id="${user.id}">${user.login}</option>`;
+        var userItem = `<option value="${user.id}">${user.login}</option>`;
     }
     ctl.insertAdjacentHTML("beforeend", userItem);
 }
@@ -135,20 +137,21 @@ async function dlgUpdateUnit() {
     } catch (err) {
         alert(`Erro recuperado os dados( ${err} )`);
     }
+    const ctlMaxOn = formUnit.querySelector("#unit-max_on");
+    ctlMaxOn.selectedIndex=unit.max_on-1;
     const users = await clientapi.read(`/users`);
     const ctl = formUnit.querySelector("#unit-admId");
     ctl.innerHTML = "";
     for (const user of users) {
         insertUserItem(ctl, user, unit.adm_id);
     }
-    loadFormValues("Editar unidade", unit.name, unit.admId);
+    loadFormValues("Editar unidade", unit.name, unit.admId, unit.max_on);
     formUnit.onsubmit = (e) => {
         e.preventDefault();
         const unit = Object.fromEntries(new FormData(formUnit));
-        //HACK recupera id pelo login
-        unit.admId = users.find((o) => o.login === unit.admId).id; //reverso para pegar o id pelo login
+        const optValue = ctlMaxOn.options[ ctlMaxOn.selectedIndex ].getAttribute("value");
+        unit.admId = optValue; //reverso para pegar o id pelo login
         clientapi.update(`/units/${globalUnitID}`, unit);
-        //updateUnitView({ id, ...unit });
         updateUnitView(unit);
         $("#formUnitModal").modal("toggle");
     };
