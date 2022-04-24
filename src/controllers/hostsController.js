@@ -33,6 +33,21 @@ const update = async (req, res) => {
     res.json(host);
 };
 
+const wake = async (req, res) => {
+    const { id } = req.params;
+
+    const { name } = req.body;
+
+    const wakeHost = { name };
+
+    await Host.wake(id, wakeHost);
+
+    const host = await Host.wake(id);
+
+    res.json(host);
+};
+
+
 const destroy = async (req, res) => {
     const { id } = req.params;
 
@@ -69,4 +84,4 @@ const filter = async ( req, res ) => {
     res.status(200).send( ret );
 }
 
-module.exports = { filter, readAll, readById, readAllByUnit, readAllEnabledByUnit, create, update, destroy };
+module.exports = { filter, readAll, readById, readAllByUnit, readAllEnabledByUnit, create, update, destroy, wake };

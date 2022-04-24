@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 //bindcontrols
 var globalUnitID = -1;
+var globalHostID = -1;
 const globalUnitList = document.querySelector("#unitList");
 const globalHostList = document.querySelector("#hostList");
 const globalAlwaysOnList = document.querySelector("#hostList");
@@ -33,6 +34,20 @@ async function dlgDeleteUnit() {
         alert("Selecione a unidade para realizar a operação");
     }
 }
+
+globalHostList.addEventListener( "change", (event) =>{
+    //talvez seja necessario adiantar a alteração do item selecionado
+    //1 - remove do atual $(".list-group .list-group-item").removeClass("active");
+    //2  passa para o novo $(e.target).addClass("active");
+    const selOpt = event.target.options[event.target.selectedIndex];
+    const key = selOpt.getAttribute("id");
+    if (key) {
+        globalHostID = key;
+    } else {
+        globalHostID = -1;
+        alert("Chave inválida");
+    }    
+});
 
 globalUnitList.addEventListener("change", (event) => {
     //talvez seja necessario adiantar a alteração do item selecionado
@@ -104,21 +119,49 @@ function createUnitView(newUnit) {
     );
 }
 
-async function dlgEditNewUnit() {
+async function dlgEditNewHost(){
     const formUnit = document.querySelector("#formUnit");
     //carga dos usuários para lista de adms
     var users = await clientapi.read(`/users`);
     const ctl = formUnit.querySelector("#unit-admId");
+    //Alimenta as opções de adms para alteração
     ctl.innerHTML = "";
     for (const user of users) {
-        insertUserItem(ctl, user);
+        insertUserItem(ctl, user, user.id ); //insertUserItem(ctl, user);
     }
     loadFormValues("Criação de unidade", "", "");
     formUnit.onsubmit = async (e) => {
         e.preventDefault();
         let unit = Object.fromEntries(new FormData(formUnit));
         //HACK recupera id pelo login
-        unit.admId = users.find((o) => o.login === unit.admId).id; //reverso para pegar o id pelo login
+        //unit.admId = users.find((o) => o.id === unit.admId).id; //unit.admId = users.find((o) => o.login === unit.admId).id; //reverso para pegar o id pelo login
+        try {
+            var newUnit = await clientapi.create("/units", unit);
+        } catch (err) {
+            alert(`Falha salvando nova unidade: ${err}`);
+        }
+        createUnitView(newUnit); //insere entrada na lista de unidades
+        $("#formUnitModal").modal("toggle");
+        document.querySelector("#createUnitBtn").blur();
+    };
+}
+
+async function dlgEditNewUnit() {
+    const formUnit = document.querySelector("#formUnit");
+    //carga dos usuários para lista de adms
+    var users = await clientapi.read(`/users`);
+    const ctl = formUnit.querySelector("#unit-admId");
+    //Alimenta as opções de adms para alteração
+    ctl.innerHTML = "";
+    for (const user of users) {
+        insertUserItem(ctl, user, user.id ); //insertUserItem(ctl, user);
+    }
+    loadFormValues("Criação de unidade", "", "");
+    formUnit.onsubmit = async (e) => {
+        e.preventDefault();
+        let unit = Object.fromEntries(new FormData(formUnit));
+        //HACK recupera id pelo login
+        //unit.admId = users.find((o) => o.id === unit.admId).id; //unit.admId = users.find((o) => o.login === unit.admId).id; //reverso para pegar o id pelo login
         try {
             var newUnit = await clientapi.create("/units", unit);
         } catch (err) {
@@ -139,18 +182,22 @@ async function dlgUpdateUnit() {
     }
     const ctlMaxOn = formUnit.querySelector("#unit-max_on");
     ctlMaxOn.selectedIndex=unit.max_on-1;
-    const users = await clientapi.read(`/users`);
+    var users = await clientapi.read(`/users`);
     const ctl = formUnit.querySelector("#unit-admId");
     ctl.innerHTML = "";
     for (const user of users) {
         insertUserItem(ctl, user, unit.adm_id);
     }
-    loadFormValues("Editar unidade", unit.name, unit.admId, unit.max_on);
+    loadFormValues("Editar unidade", unit.name, unit.id, unit.max_on);
     formUnit.onsubmit = (e) => {
         e.preventDefault();
-        const unit = Object.fromEntries(new FormData(formUnit));
-        const optValue = ctlMaxOn.options[ ctlMaxOn.selectedIndex ].getAttribute("value");
-        unit.admId = optValue; //reverso para pegar o id pelo login
+        //const unit = Object.fromEntries(new FormData(formUnit));
+        let unit = Object.fromEntries(new FormData(formUnit));
+        //HACK recupera id pelo login
+        //unit.admId = users.find((o) => o.login === unit.admId).id; //reverso para pegar o id pelo login
+
+        //const optValue = ctlMaxOn.options[ ctlMaxOn.selectedIndex ].getAttribute("value");
+        //unit.admId = optValue; //reverso para pegar o id pelo login
         clientapi.update(`/units/${globalUnitID}`, unit);
         updateUnitView(unit);
         $("#formUnitModal").modal("toggle");
@@ -162,10 +209,11 @@ function updateUnitView(unit) {
     item.innerHTML = unit.name;
 }
 
-function dlgPowerHost() {
+async function dlgWakeHost() {
     alert(
         `Serviço Wake-on-LAN(WOL) será acionado para o host informado através de seu MAC addres`
     );
+    clientapi.wake(`/hosts/wake/${globalHostID}`);
 }
 
 //troca de estilos
@@ -179,7 +227,7 @@ document.getElementById("user-css").addEventListener("change", (event) => {
     oldlink.setAttribute("href", cssFile);
 });
 
-window.dlgPowerHost = dlgPowerHost;
+window.dlgWakeHost = dlgWakeHost;
 window.dlgDeleteUnit = dlgDeleteUnit;
 
 window.dlgEditNewUnit = dlgEditNewUnit;

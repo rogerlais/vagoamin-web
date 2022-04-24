@@ -113,6 +113,17 @@ async function readById(id) {
     return host;
 }
 
+
+async function wake( id, data ){
+    console.log( "Rotina não implementada - Acordar computador !!");
+    //todo referencia para iniciar processo wol.sh com os argumentos
+    const execSync = require('child_process').execSync;
+    // import { execSync } from 'child_process';  // replace ^ if using ES modules
+    
+    const output = execSync('ls', { encoding: 'utf-8' });  // the default is 'buffer'
+    console.log('Output was:\n', output);    
+}
+
 async function update(id, data) {
     const sql = `
     UPDATE

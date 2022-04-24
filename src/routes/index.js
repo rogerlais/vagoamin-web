@@ -32,6 +32,7 @@ router.get(
 );
 router.delete("/hosts/:id", Auth.isAuthenticated, hostsController.destroy);
 router.put("/hosts/:id", Auth.isAuthenticated, hostsController.update);
+router.put("/hosts/wake/:id", Auth.isAuthenticated, hostsController.wake);  //recem ingresso
 
 //unidades
 router.get("/units", Auth.isAuthenticated, unitsController.readAll);
